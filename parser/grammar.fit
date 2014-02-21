@@ -16,7 +16,6 @@
 %%==============================================================================
 %% APE Grammar --- Syntax and DRS-Threading for ACE Sentences
 %% Authors: Stefan Hoefler, Gerold Schneider, Kaarel Kaljurand, Tobias Kuhn
-% \version{ape-6.6-110816}
 %%==============================================================================
 
 :- module(grammar, [parse/4]).
@@ -5627,7 +5626,7 @@ term1_tail(
 	word_noninitial(Op, (Op == '+' ; Op == '-')),
 	term1(
 		display!tree!Tree &
-		display!treepart![expr,Tree1,[Op],Tree2] &
+		display!treepart![expr,Tree1,Op,Tree2] &
 		display!treenext!Tree2 &
 		drs!id!ID &
 		drs!in!DrsIn &
@@ -5651,7 +5650,7 @@ term1_tail(
 	word_noninitial('&'),
 	term1(
 		display!tree!Tree &
-		display!treepart![expr,Tree1,['&'],Tree2] &
+		display!treepart![expr,Tree1,'&',Tree2] &
 		display!treenext!Tree2 &
 		drs!id!ID &
 		drs!in!DrsIn &
@@ -5734,7 +5733,7 @@ term2_tail(
 	word_noninitial(Op, (Op == '*' ; Op == '/')),
 	term2(
 		display!tree!Tree &
-		display!treepart![expr,Tree1,[Op],Tree2] &
+		display!treepart![expr,Tree1,Op,Tree2] &
 		display!treenext!Tree2 &
 		drs!id!ID &
 		drs!in!DrsIn &
@@ -5812,7 +5811,7 @@ term3_tail(
 	word_noninitial(Op, (Op == '^')),
 	term3(
 		display!tree!Tree &
-		display!treepart![expr,Tree1,[Op],Tree2] &
+		display!treepart![expr,Tree1,Op,Tree2] &
 		display!treenext!Tree2 &
 		drs!id!ID &
 		drs!in!DrsIn &

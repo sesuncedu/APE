@@ -14,10 +14,12 @@
 # In case you don't have `curl' or `wget',
 # download the testset manually before running the script (without `d', in this case).
 
-#prolog=pl
 prolog=swipl
+#prolog=/usr/local/lib/swipl-6.4.1/bin/x86_64-linux/swipl
 #prolog=/opt/local/bin/swipl
 #prolog=`which swipl`
+
+clex='clex_lexicon.pl'
 
 echo "Using: `$prolog --version`"
 
@@ -34,6 +36,12 @@ echo "Downloading the latest ACE text set ... "
 curl -o acetexts.pl http://attempto.ifi.uzh.ch/cgi-bin/acetextset/get_acetexts.cgi
 echo "done."
 fi
+fi
+
+
+if [ ! -f $clex ]; then
+	echo "Downloading the large Clex lexicon (from github.com/Attempto/Clex)"
+	curl -o $clex https://raw.github.com/Attempto/Clex/master/$clex
 fi
 
 # Creates a directory for the test results.

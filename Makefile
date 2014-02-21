@@ -1,6 +1,8 @@
 # Unofficial Makefile for some tasks
 # Tested only on Ubuntu Linux.
 
+version = 6.7
+
 text1 = "John likes Mary."
 text2 = "Every man likes a car."
 text3 = "1 / 2 ^ 3 ^ 4 = 1/8."
@@ -23,11 +25,11 @@ build:
 	swipl -O -F none -g "working_directory(_, 'parser'), [fit_to_plp], halt." -t halt ; swipl -O -f ape.pl -g "qsave_program('ape.exe', [goal(ape), toplevel(halt), local(25000), global(50000)])." -t halt
 
 clean:
-	rm -f *.exe *.toc
+	rm -f *.exe *.toc parser/*.plp parser/*.html parser/*.toc
 
 doc:
 	cat parser/grammar.fit parser/grammar_functionwords.fit parser/grammar_contentwords.fit | perl parser/make_syntax_report.perl
-	cat parser/grammar.fit parser/grammar_functionwords.fit parser/grammar_contentwords.fit | perl parser/make_syntax_report.perl > syntax_report.html
+	cat parser/grammar.fit parser/grammar_functionwords.fit parser/grammar_contentwords.fit | perl parser/make_syntax_report.perl --number $(version) > syntax_report.html
 
 test:
 	./ape.exe -text $(text1) -cdrspp -cparaphrase -cowlfsspp -csyntax -csyntaxpp -csyntaxd -csyntaxdpp

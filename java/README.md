@@ -1,43 +1,58 @@
 Java Interface for APE
 ======================
 
-Copyright 2008-2012, Attempto Group, University of Zurich (http://attempto.ifi.uzh.ch).
-
-The Java Interface for APE is part of the Attempto Parsing Engine
-(https://github.com/Attempto/APE).
-
-The Java Interface for APE is free software licensed under the GNU Lesser General Public
-Licence (see LICENSE.txt and http://www.gnu.org/licenses/lgpl.html).
-
-See java/lib/README.txt for information about the used third-party libraries.
+The Java Interface for APE is part of the Attempto Parsing Engine (APE).
+Copyright 2008-2013, Attempto Group, University of Zurich (http://attempto.ifi.uzh.ch).
 
 
 Content
 -------
 
-The Java Interface for APE consists of one jar-file `attempto-ape.jar`, which contains interfaces
-to the Attempto Parsing Engine (APE).
+To simplify calling APE from Java programs, we provide the `ACEParser` interface which
+is effectively a Java-style front-end to querying the predicate `get_ape_results/2`.
+`ACEParser` is implemented by the following classes:
 
-See docs/index.html for the detailed documentation of the packages and classes (you might have to
-run the respective Ant command first, see below).
-
-
-Compilation
------------
-
-Apache Ant is needed for compilation. The following commands are available:
-
-- `ant compile` compiles the Java source code.
-- `ant createjars` creates the jar-files.
-- `ant createjavadoc` creates the Javadoc documentation pages.
-- `ant clean` deletes all automatically generated files like the compiled Java classes, the
-  jar-files, and the Javadoc files.
-- `ant buildeverything` builds everything from scratch.
+  - `APELocal` accesses APE via JPL, the bidirectional Prolog/Java interface, which is included in the SWI-Prolog installation;
+  - `APESocket` accesses APE via its socket server;
+  - `APEWebservice` accesses APE via its HTTP server.
 
 
-APELocal
---------
+Building with Maven
+-------------------
 
-The APELocal class is an interface to the ACE parser that is written in SWI Prolog. When this class
-is used directly or indirectly, you have to make sure that a recent version of SWI Prolog is
-installed and that the file ape.exe is available.
+The Java Interface for APE can be compiled into a single jar-file `attempto-ape.jar`.
+
+First install SWI-Prolog's JPL into your local Maven repository.
+See [install-jpl.sh](install-jpl.sh) for an example on how do it.
+
+Building the jar-file.
+
+	mvn package -DskipTests
+
+Building the documentation, licenses, etc.
+
+	mvn site
+
+
+Testing
+-------
+
+In order to run the unit tests (`mvn test`), first compile `ape.exe`.
+
+For the `APELocal` tests to succeed, place `ape.exe` into the APE root directory
+and execute (in any directory):
+
+	eval `swipl -dump-runtime-variables`
+	export LD_PRELOAD=$PLBASE/lib/$PLARCH/libjpl.so:$PLBASE/lib/$PLARCH/libswipl.so
+
+For the `APESocket` tests to succeed, start the APE socket server:
+
+	ape.exe -server -port 5000
+
+For the `APEWebservice` tests to succeed, start the APE HTTP server:
+
+	ape.exe -httpserver -port 8000
+
+Now run
+
+	mvn test

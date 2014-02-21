@@ -3,16 +3,14 @@ APE - ACE Parsing Engine
 
 Authors: Kaarel Kaljurand, Norbert E. Fuchs, Tobias Kuhn
 
-Last update: 2012-01-04
-
 
 Introduction
 ------------
 
 This document explains how APE (ACE Parsing Engine) is compiled and used.
 
-In order to compile and run APE, you first need to install a recent version of SWI Prolog. SWI
-Prolog is free software and can be downloaded from http://www.swi-prolog.org. Note that you
+In order to compile and run APE, you first need to install a recent version of SWI-Prolog.
+SWI-Prolog is free software and can be downloaded from <http://www.swi-prolog.org>. Note that you
 minimally need to install the following SWI Prolog packages: `clib`, `sgml`, and `http`. To view
 the documentation embedded in the source files you also need `pldoc`.
 
@@ -34,8 +32,8 @@ APE has to be executed from the command-line. In the command-line terminal, go t
 directory of APE (where `ape.exe` is located). Then type `ape.exe` in the case of Windows or
 `./ape.exe` otherwise. As a result, you should see the following output:
 
-    Attempto Parsing Engine for ACE 6.6, version 6.6-110816
-    Copyright 2008-2011 Attempto Group, University of Zurich
+    Attempto Parsing Engine for ACE 6.7, version 6.7-131003
+    Copyright 2008-2013, Attempto Group, University of Zurich
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it under certain conditions.
     Please visit http://attempto.ifi.uzh.ch for details.
@@ -140,7 +138,7 @@ The socket interface knows only one command:
 
 where `Parameters` is a list of parameters accepted by `get_ape_results/2`. Note the dot at the end
 of the command! (There should also be a newline after the dot.) Given the input, the server runs
-`get_ape_results/2` (with a 20 second timelimit) on it and sends back the results, followed by
+`get_ape_results/2` on it and sends back the results, followed by
 `APESERVERSTREAMEND` on a separate line. If the input command is syntactically incorrect then an
 error message is logged into STDERR. In any case, the connection to the client is closed.
 
@@ -202,13 +200,7 @@ pointer an HTTP resource (i.e. URL) but not via pointing to a local file (such a
 
 ### Using APE from Java programs
 
-The `ACEParser` implementation `APELocal` (in `attempto_ape.jar`)
-provides a high level Java interface to `ape.exe`. It
-is effectively a Java-style front-end to querying the predicate `get_ape_results/2`.
-
-Even if you need to write your own Java interface to `ape.exe`, it might be useful to take a look
-at the source code of `APELocal.java` for instructions on how to access JPL, the bidirectional
-Prolog/Java interface, which is included in the SWI Prolog installation.
+See the documentation in [java/](java/).
 
 
 ### Some examples
@@ -255,7 +247,7 @@ The distribution includes the following packages containing the main code in Pro
              reference resolver)
 
 This listing reflects the dependencies: `logger` depends on no other package. `lexicon` only
-depends on `logger`. The package `utils` only depends on `logger` and `utils`. The package
+depends on `logger`. The package `utils` only depends on `logger` and `lexicon`. The package
 `parser`, finally, depends on all three other packages. The files in the root directory depend on
 those packages, but not vice versa.
 

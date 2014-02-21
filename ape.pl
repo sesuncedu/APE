@@ -1,5 +1,5 @@
 % This file is part of the Attempto Parsing Engine (APE).
-% Copyright 2008-2012, Attempto Group, University of Zurich (see http://attempto.ifi.uzh.ch).
+% Copyright 2008-2013, Attempto Group, University of Zurich (see http://attempto.ifi.uzh.ch).
 %
 % The Attempto Parsing Engine (APE) is free software: you can redistribute it and/or modify it
 % under the terms of the GNU Lesser General Public License as published by the Free Software
@@ -127,12 +127,26 @@ ape :-
 
 %% get_arglist(+RawArgList, -ArgList)
 %
+% Returns the list of arguments.
+% In SWI v6.6.0+ this can be achieved simply by:
+%
+%     get_arglist(ArgList) :-
+%       current_prolog_flag(argv, ArgList).
+%
+% For backwards compatibility we assume that the argument
+% list can contain '--', or the path to ape.exe before the
+% first argument (which must start with '-').
 %
 get_arglist(RawArgList, ArgList) :-
     append(_, ['--'|ArgList], RawArgList),
     !.
 
-get_arglist([_|ArgList], ArgList).
+% TODO: on which OS is this needed?
+get_arglist([NonFlag|ArgList], ArgList) :-
+	\+ atom_concat('-', _, NonFlag),
+	!.
+
+get_arglist(ArgList, ArgList).
 
 
 %% process_input(+InputList:list) is det.
@@ -187,7 +201,7 @@ process_input(InputList1) :-
 %
 show_help :-
 	show_version,
-	write('Copyright 2008-2012 Attempto Group, University of Zurich\n'),
+	write('Copyright 2008-2013, Attempto Group, University of Zurich\n'),
 	write('This program comes with ABSOLUTELY NO WARRANTY.\n'),
 	write('This is free software, and you are welcome to redistribute it under certain conditions.\n'),
 	write('Please visit http://attempto.ifi.uzh.ch for details.\n'),
@@ -206,7 +220,7 @@ show_help.
 % Prints the version information.
 %
 show_version :-
-	format("Attempto Parsing Engine for ACE 6.6, version ~w~n", ['6.6-110816']).
+	format("Attempto Parsing Engine for ACE 6.7, version ~w~n", ['6.7-131003']).
 
 
 %% arglist_namevaluelist(+ArgList:list, -NameValueList:list) is det.

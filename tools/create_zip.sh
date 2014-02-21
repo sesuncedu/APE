@@ -1,3 +1,10 @@
+#
+# Packages the main contents of the repository as a zip-file.
+# Includes the jar-file and Javadoc for the Java interface for APE.
+#
+# Note: For a new release you probably need to update the version number
+# in 'ape-6.7'.
+#
 echo Compiling APE...
 cd ../parser
 bash compile.sh
@@ -5,11 +12,8 @@ cd ..
 
 echo Building the Java Interface for APE...
 cd java
-ant
+mvn package site -DskipTests
 cd ..
-
-mv lexicon/clex_lexicon.pl lexicon/clex_lexicon.pl.tmp
-mv lexicon/clex_lexicon_small.pl lexicon/clex_lexicon.pl
 
 echo "Generating public regression test set..."
 cd tests
@@ -21,30 +25,32 @@ rm ape-*.zip
 
 timestamp=`date '+%y%m%d'`
 
-zip \
-    ape-6.6-$timestamp.zip \
-        * \
-        lexicon/* \
-        logger/* \
-        parser/* \
-        utils/* \
-        utils/owlswrl/* \
-        java/* \
-        java/src/* \
-        java/src/ch/uzh/ifi/attempto/* \
-        java/src/ch/uzh/ifi/attempto/ape/* \
-        java/docs/* \
-        java/docs/ch/uzh/ifi/attempto/ape/* \
-        java/docs/src-html/ch/uzh/ifi/attempto/ape/* \
-        java/docs/resources/* \
-        java/lib/* \
-        java/licenses/* \
-    -i \
-        *.pl *.fit *.txt *.perl *.html *.xml *.java *.jar *.css \
-        */package-list */inherit.gif ape/make_exe.*
+zip -r \
+    ape-6.7-$timestamp.zip \
+        ape.pl \
+        CHANGES.md \
+        get_ape_results.pl \
+        LICENSE.txt \
+        make_exe.bat \
+        make_exe.sh \
+        README.md \
+        runape.pl \
+        run.sh \
+        acetext_drs.pl \
+        examples/ \
+        java/install-jpl.sh \
+        java/pom.xml \
+        java/README.md \
+        java/src/ \
+        java/target/*.jar \
+        java/target/site \
+        lexicon/ \
+        logger/ \
+        parser/ \
+        utils/ \
+    -x \
+        \*.gitignore \*.plp
 
-mv lexicon/clex_lexicon.pl lexicon/clex_lexicon_small.pl
-mv lexicon/clex_lexicon.pl.tmp lexicon/clex_lexicon.pl
 rm acetext_drs.pl
 
 echo Finished.
